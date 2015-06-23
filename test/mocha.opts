@@ -1,0 +1,6 @@
+--require test/utils/babel-register.js
+--require test/utils/node-extensions.js
+--require test/utils/dom.js
+--require test/utils/react-warnings.js
+--require should
+--reporter nyan
