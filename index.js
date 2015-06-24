@@ -1,3 +1,3 @@
-import styleable from './lib/styleable'
+import styleable from './src/styleable'
 
 export default styleable

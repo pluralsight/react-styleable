@@ -9,9 +9,11 @@
     "react": "^0.13.3"
   },
   "scripts": {
-    "test": "mocha \"lib/**/*.spec.js\"",
-    "test-watch": "mocha \"lib/**/*.spec.js\" --watch",
-    "start": "webpack-dev-server --config webpack.config.js"
+    "test": "mocha \"src/**/*.spec.js\"",
+    "test-watch": "mocha \"src/**/*.spec.js\" --watch",
+    "start": "webpack-dev-server --config webpack.config.js",
+    "compile": "babel --stage 0 --source-maps --debug lib/ src/",
+    "prepublish": "npm run compile"
   },
   "keywords": [
     "react",
