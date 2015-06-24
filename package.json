@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "invariant": "^2.1.0",
+    "lodash": "^3.9.3",
     "react": "^0.13.3"
   },
   "scripts": {
