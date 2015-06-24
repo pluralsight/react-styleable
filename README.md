@@ -2,8 +2,9 @@
 
 A higher-order React Component that:
 
-- Makes defining and using css styles consistent 
-- Makes overriding styles in reusable components easy and predictable
+- Makes defining and using css styles in React Components consistent
+- Makes you styles portable with your reusable components
+- Makes overriding styles easy and predictable
 
 ## Install
 
@@ -29,7 +30,7 @@ CSS Modules allow for:
 
 - Writing CSS normally in a stylesheet in either vanilla CSS or any number of preprocessors (eg, Sass)
 - Not having to worry about a global namespace, creating a per-use module around styles
-- Defining explicity dependencies in your styles
+- Defining explicit dependencies in your styles
 
 To accomplish this, CSS Modules use a format called [Interoperable CSS (ICSS)](https://github.com/css-modules/icss).  Essentially, form describes the explicit export objects and import objects needed to make modules work.
 
@@ -41,7 +42,7 @@ react-styleable shines when used on reusable react components that has an accomp
 
 Write your css as you usually would.  However, note that there's no need for a BEM-style namespacing.  This is because these styles will be scoped to your local module.
 
-```css my-list.css
+```css
 .list {
   list-style: none;
   padding-left: 0;
@@ -89,11 +90,13 @@ React.render(<MyList />, document.getElementById('app'))
 
 If you want to override this React Component's styles as the consumer, you can easily do so, through the same, consistent interface.  First, define a new stylesheet:
 
-```css client.css
+```css
 .item {
   outline: 1px solid blue;
 }
 ```
+
+And use it to render `MyList` again:
 
 ```js
 import MyList from './my-list'
