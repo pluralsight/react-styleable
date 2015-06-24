@@ -1,3 +1,1 @@
-import styleable from './src/styleable'
-
-export default styleable
+module.exports = require('./lib/styleable')
