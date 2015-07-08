@@ -3,7 +3,7 @@
 A higher-order React Component that:
 
 - Makes defining and using css styles in React Components consistent
-- Makes you styles portable with your reusable components
+- Makes your styles portable with your reusable components
 - Makes overriding styles easy and predictable
 
 ## Install
