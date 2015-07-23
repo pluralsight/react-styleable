@@ -1,4 +1,5 @@
 import assign from 'lodash/object/assign'
+import getDisplayName from './utils/get-display-name'
 import invariant from 'invariant'
 import React from 'react'
 
@@ -28,7 +29,8 @@ export default function styleable(stylesheet) {
     throw new Error('stylesheet must be an object (eg, export object from a css module)')
 
   return function decorateSource(DecoratedComponent) {
-    return class CssStyleComponent extends React.Component {
+    return class Styleable extends React.Component {
+      static displayName = `Styleable(${getDisplayName(DecoratedComponent)})`
       static defaultProps = {
         css: {}
       }
