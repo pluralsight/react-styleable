@@ -21,6 +21,16 @@ function stylesAreOverrides(cssProps, stylesheet) {
   return hasDefinedStyles(stylesheet) ? isPropsAnOverride(cssProps, stylesheet) : true
 }
 
+function isClass(Comp) {
+  // :( try/catch flow control -- want something better
+  try {
+    Comp()
+  } catch (e) {
+    return e && e.message && /Cannot call a class as a function/.test(e.message)
+  }
+  return false
+}
+
 export default function styleable(stylesheet) {
   if (!stylesheet)
     stylesheet = {}
@@ -29,26 +39,31 @@ export default function styleable(stylesheet) {
     throw new Error('stylesheet must be an object (eg, export object from a css module)')
 
   return function decorateSource(DecoratedComponent) {
-    return class Styleable extends React.Component {
-      static displayName = `Styleable(${getDisplayName(DecoratedComponent)})`
-      static defaultProps = {
-        css: {}
+    if (!isClass(DecoratedComponent))
+      return function styledFn(props) {
+        return DecoratedComponent({ ...props, css: { ...stylesheet, ...props.css }})
       }
-      static propTypes = {
-        css: React.PropTypes.object
+    else
+      return class Styleable extends React.Component {
+        static displayName = `Styleable(${getDisplayName(DecoratedComponent)})`
+        static defaultProps = {
+          css: {}
+        }
+        static propTypes = {
+          css: React.PropTypes.object
+        }
+        getCss() {
+          invariant(
+            stylesAreOverrides(this.props.css, stylesheet),
+            'Expected "this.props.css" to provide only overrides to the given stylesheet.  Selectors "%s" not included in the stylesheet keys, "%s".',
+            getSelectorsNotInStylesheet(this.props.css, stylesheet),
+            Object.keys(stylesheet)
+          )
+          return assign({}, stylesheet, this.props.css)
+        }
+        render() {
+          return <DecoratedComponent ref="wrapped" {...this.props} css={this.getCss()} />
+        }
       }
-      getCss() {
-        invariant(
-          stylesAreOverrides(this.props.css, stylesheet),
-          'Expected "this.props.css" to provide only overrides to the given stylesheet.  Selectors "%s" not included in the stylesheet keys, "%s".',
-          getSelectorsNotInStylesheet(this.props.css, stylesheet),
-          Object.keys(stylesheet)
-        )
-        return assign({}, stylesheet, this.props.css)
-      }
-      render() {
-        return <DecoratedComponent ref="wrapped" {...this.props} css={this.getCss()} />
-      }
-    }
   }
 }

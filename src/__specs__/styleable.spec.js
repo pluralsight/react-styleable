@@ -1,8 +1,8 @@
-import React from 'react/addons'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import TestUtils from 'react-addons-test-utils'
 
 import styleable from '../styleable'
-
-const TestUtils = React.addons.TestUtils
 
 const css = {
   content: 'someHashFromALocalCssModule'
@@ -21,6 +21,13 @@ function mkFixture(css) {
   return Subject
 }
 
+function mkFunctionFixture(css) {
+  function subject(props) {
+    return <div className={props.css.content}>Content</div>
+  }
+
+  return styleable(css)(subject)
+}
 
 describe('styleable', () => {
 
@@ -87,6 +94,26 @@ describe('styleable', () => {
     const Subject = mkFixture(origCss)
     var component = TestUtils.renderIntoDocument(<Subject css={overrideCss}/>)
     component.props.css.content.should.eql(newHash )
+  })
+
+  describe('with stateless functions', () => {
+
+    it('makes the css prop available', () => {
+      const css = { content: 'cssHash' }
+      const Subject = mkFunctionFixture(css)
+      const component = TestUtils.renderIntoDocument(<div><Subject /></div>)
+      ReactDOM.findDOMNode(component).children[0].className.should.eql(css.content)
+    })
+
+    it('allows overrides to the stylesheet', () => {
+      const newHash = 'anotherHash'
+      const origCss = { content: 'hash' }
+      const overrideCss = { content: newHash }
+      const Subject = mkFunctionFixture(origCss)
+      const component = TestUtils.renderIntoDocument(<div><Subject css={overrideCss} /></div>)
+      ReactDOM.findDOMNode(component).children[0].className.should.eql(newHash)
+    })
+
   })
 
 })
