@@ -38,7 +38,7 @@ I recommend using webpack's [css-loader](https://github.com/webpack/css-loader),
 
 ## Usage
 
-react-styleable shines when used on reusable react components that has an accompanying stylesheet. 
+react-styleable shines when used on reusable react components that has an accompanying stylesheet.
 
 Write your css as you usually would.  However, note that there's no need for a BEM-style namespacing.  This is because these styles will be scoped to your local module.
 
@@ -59,7 +59,9 @@ Then in your reusable component, wrap your React.Component in this higher-order 
 ```js
 import styleable from 'react-styleable'
 
-@styleable(require('./my-list.css'))
+import css from './my-list.css'
+
+@styleable(css)
 export default class MyList extends React.Component {
   renderItem(item, i) {
     return (
@@ -108,4 +110,37 @@ React.render(<MyList css={css} />, document.getElementById('app'))
 
 Now the `.item`s outline will be blue instead of the original red.
 
+### React 0.14 Stateless Functions Usage
+
+You can also wrap stateless functions, now possible in react@0.14, with `react-styleable`.  The above `MyList` component could be rewritten as a stateless component:
+
+```js
+import styleable from 'react-styleable'
+
+import css from './my-list.css'
+
+function renderItem(css, item, i) {
+  return (
+    <li key={i} className={css.item}>{item}</li>
+  )
+}
+function renderList(css, items) {
+  return items.map(renderItem.bind(null, css))
+}
+function MyList(props) {
+  return (
+    <ul className={props.css.list}>
+      {renderList(props.css, props.items)}
+    </ul>
+  )
+}
+
+export default styleable(css)(MyList)
+```
+
 Styled. Portable. Easily overridden.  So, so good.
+
+
+
+
+
