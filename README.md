@@ -14,14 +14,6 @@ npm install react-styleable --save-dev
 
 ## Dependencies
 
-#### ES6
-
-react-styleable source usings ES6+ features, including class definition, class properties, and es6 imports.
-
-react-styleable also works very well when used as a class decorator.
-
-For these reasons, I recommend [babel](https://babeljs.io/) as a JavaScript compiler option, best used in webpack's [babel-loader](https://github.com/babel/babel-loader).
-
 #### CSS Modules
 
 react-styleable assumes that your reusable component and consumers of that component will be using [CSS modules](https://github.com/css-modules/css-modules).
@@ -31,8 +23,6 @@ CSS Modules allow for:
 - Writing CSS normally in a stylesheet in either vanilla CSS or any number of preprocessors (eg, Sass)
 - Not having to worry about a global namespace, creating a per-use module around styles
 - Defining explicit dependencies in your styles
-
-To accomplish this, CSS Modules use a format called [Interoperable CSS (ICSS)](https://github.com/css-modules/icss).  Essentially, form describes the explicit export objects and import objects needed to make modules work.
 
 I recommend using webpack's [css-loader](https://github.com/webpack/css-loader), which has [support for CSS Modules](https://github.com/webpack/css-loader#css-modules).
 
@@ -139,8 +129,3 @@ export default styleable(css)(MyList)
 ```
 
 Styled. Portable. Easily overridden.  So, so good.
-
-
-
-
-
