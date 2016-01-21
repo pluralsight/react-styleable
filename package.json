@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha \"src/**/*.spec.js\"",
     "test-watch": "mocha \"src/**/*.spec.js\" --watch",
-    "compile": "babel src/ --stage 0 --source-maps --debug --out-dir lib/",
+    "compile": "babel src/ --source-maps --debug --out-dir lib/",
     "prepublish": "npm run compile"
   },
   "keywords": [
