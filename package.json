@@ -6,7 +6,6 @@
   "scripts": {
     "test": "mocha \"src/**/*.spec.js\"",
     "test-watch": "mocha \"src/**/*.spec.js\" --watch",
-    "start": "webpack-dev-server --config webpack.config.js",
     "compile": "babel src/ --stage 0 --source-maps --debug --out-dir lib/",
     "prepublish": "npm run compile"
   },
@@ -18,14 +17,20 @@
     "css",
     "icss",
     "module",
-    "inline styles"
+    "inline styles",
+    "css modules"
   ],
   "author": "jaketrent",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/pluralsight/react-styleable.git"
+  },
   "license": "MIT",
-  "dependencies": {
-    "invariant": "^2.1.0",
-    "lodash": "^3.9.3",
+  "peerDependencies": {
     "react": "^0.14.0"
+  },
+  "dependencies": {
+    "invariant": "^2.1.0"
   },
   "devDependencies": {
     "babel": "^5.6.4",

@@ -1,4 +1,3 @@
-import assign from 'lodash/object/assign'
 import getDisplayName from './utils/get-display-name'
 import invariant from 'invariant'
 import React from 'react'
@@ -59,7 +58,7 @@ export default function styleable(stylesheet) {
             getSelectorsNotInStylesheet(this.props.css, stylesheet),
             Object.keys(stylesheet)
           )
-          return assign({}, stylesheet, this.props.css)
+          return { ...stylesheet, ...this.props.css }
         }
         render() {
           return <DecoratedComponent ref="wrapped" {...this.props} css={this.getCss()} />
