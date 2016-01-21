@@ -42,7 +42,7 @@
     "babel-preset-stage-0": "^6.3.13",
     "commitizen": "^2.4.6",
     "cz-conventional-changelog": "^1.1.5",
-    "jsdom": "^3.1.2",
+    "jsdom": "^7.2.2",
     "mocha": "^2.3.3",
     "react-addons-test-utils": "^0.14.0",
     "react-dom": "^0.14.0",
