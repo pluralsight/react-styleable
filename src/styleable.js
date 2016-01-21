@@ -5,7 +5,7 @@ import React from 'react'
 function getSelectorsNotInStylesheet(cssProps, stylesheet) {
   const propKeys = Object.keys(cssProps)
   const cssKeys = Object.keys(stylesheet)
-  return propKeys.filter(prop => !cssKeys.includes(prop))
+  return propKeys.filter(prop => cssKeys.indexOf(prop) === -1)
 }
 
 function isPropsAnOverride(cssProps, stylesheet) {
@@ -44,13 +44,13 @@ export default function styleable(stylesheet) {
       }
     else
       return class Styleable extends React.Component {
-        static displayName = `Styleable(${getDisplayName(DecoratedComponent)})`
+        static displayName = `Styleable(${getDisplayName(DecoratedComponent)})`;
         static defaultProps = {
           css: {}
-        }
+        };
         static propTypes = {
           css: React.PropTypes.object
-        }
+        };
         getCss() {
           invariant(
             stylesAreOverrides(this.props.css, stylesheet),

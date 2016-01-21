@@ -22,8 +22,8 @@
   ],
   "author": "jaketrent",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/pluralsight/react-styleable.git"
+    "type": "git",
+    "url": "https://github.com/pluralsight/react-styleable.git"
   },
   "license": "MIT",
   "peerDependencies": {
@@ -33,7 +33,12 @@
     "invariant": "^2.1.0"
   },
   "devDependencies": {
-    "babel": "^5.6.4",
+    "babel-cli": "^6.4.5",
+    "babel-core": "^6.4.5",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-preset-stage-0": "^6.3.13",
     "jsdom": "^3.1.2",
     "mocha": "^2.3.3",
     "react-addons-test-utils": "^0.14.0",
