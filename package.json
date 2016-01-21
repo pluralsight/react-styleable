@@ -1,6 +1,5 @@
 {
   "name": "react-styleable",
-  "version": "2.2.2",
   "description": "Higher-order component for styling react",
   "main": "index.js",
   "scripts": {
