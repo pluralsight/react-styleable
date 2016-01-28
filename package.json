@@ -19,7 +19,8 @@
     "icss",
     "module",
     "inline styles",
-    "css modules"
+    "css modules",
+    "css-module"
   ],
   "author": "jaketrent",
   "repository": {
