@@ -40,7 +40,14 @@ export default function styleable(stylesheet) {
   return function decorateSource(DecoratedComponent) {
     if (!isClass(DecoratedComponent))
       return function styledFn(props) {
-        return DecoratedComponent({ ...props, css: { ...stylesheet, ...props.css }})
+        return DecoratedComponent({
+          ...DecoratedComponent.defaultProps,
+          ...props,
+          css: {
+            ...stylesheet,
+            ...props.css
+          }
+        });
       }
     else
       return class Styleable extends React.Component {
