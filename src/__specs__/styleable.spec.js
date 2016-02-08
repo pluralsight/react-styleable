@@ -11,9 +11,12 @@ const css = {
 function mkFixture(css) {
   @styleable(css)
   class Subject extends React.Component {
+    static defaultProps = {
+      aDefault: 'still here'
+    };
     render() {
       return (
-        <div className={this.props.css.content} ref="content">Content</div>
+        <div className={this.props.css.content} ref="content">Content {this.props.aDefault}</div>
       )
     }
   }
@@ -23,7 +26,10 @@ function mkFixture(css) {
 
 function mkFunctionFixture(css) {
   function subject(props) {
-    return <div className={props.css.content}>Content</div>
+    return <div className={props.css.content}>Content {props.aDefault}</div>
+  }
+  subject.defaultProps = {
+    aDefault: 'still here'
   }
 
   return styleable(css)(subject)
@@ -96,6 +102,12 @@ describe('styleable', () => {
     component.props.css.content.should.eql(newHash )
   })
 
+  it('lets defaultProps pass through', () => {
+    const Subject = mkFixture()
+    const component = TestUtils.renderIntoDocument(<Subject />)
+    component.props.aDefault.should.eql('still here')
+  })
+
   describe('with stateless functions', () => {
 
     it('makes the css prop available', () => {
@@ -112,6 +124,12 @@ describe('styleable', () => {
       const Subject = mkFunctionFixture(origCss)
       const component = TestUtils.renderIntoDocument(<div><Subject css={overrideCss} /></div>)
       ReactDOM.findDOMNode(component).children[0].className.should.eql(newHash)
+    })
+
+    it('lets defaultProps pass through', () => {
+      const Subject = mkFunctionFixture()
+      const component = TestUtils.renderIntoDocument(<div><Subject /></div>)
+      ReactDOM.findDOMNode(component).children[0].textContent.should.eql('Content still here')
     })
 
   })

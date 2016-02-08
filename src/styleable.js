@@ -53,6 +53,7 @@ export default function styleable(stylesheet) {
       return class Styleable extends React.Component {
         static displayName = `Styleable(${getDisplayName(DecoratedComponent)})`;
         static defaultProps = {
+          ...DecoratedComponent.defaultProps,
           css: {}
         };
         static propTypes = {
