@@ -2,6 +2,7 @@
   "name": "react-styleable",
   "description": "Higher-order component for styling react",
   "main": "index.js",
+  "version": "0.0.0-semantically-released",
   "scripts": {
     "commit": "git-cz",
     "compile": "babel src/ --source-maps --debug --out-dir lib/",
