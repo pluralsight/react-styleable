@@ -38,10 +38,9 @@ export default function styleable(stylesheet) {
     throw new Error('stylesheet must be an object (eg, export object from a css module)')
 
   return function decorateSource(DecoratedComponent) {
-    if (!isClass(DecoratedComponent))
-      return function styledFn(props) {
+    if (!isClass(DecoratedComponent)) {
+      const styledFn = function (props) {
         return DecoratedComponent({
-          ...DecoratedComponent.defaultProps,
           ...props,
           css: {
             ...stylesheet,
@@ -49,6 +48,10 @@ export default function styleable(stylesheet) {
           }
         });
       }
+      styledFn.defaultProps = DecoratedComponent.defaultProps
+      styledFn.propTypes = DecoratedComponent.propTypes
+      return styledFn
+    }
     else
       return class Styleable extends React.Component {
         static displayName = `Styleable(${getDisplayName(DecoratedComponent)})`;
@@ -57,6 +60,7 @@ export default function styleable(stylesheet) {
           css: {}
         };
         static propTypes = {
+          ...DecoratedComponent.propTypes,
           css: React.PropTypes.object
         };
         getCss() {
