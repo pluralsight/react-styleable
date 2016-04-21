@@ -30,7 +30,7 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "react": "^0.14.0"
+    "react": "^15.0.0"
   },
   "dependencies": {
     "invariant": "^2.1.0"
