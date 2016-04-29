@@ -30,7 +30,7 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "react": "^0.14.0"
+    "react": "^15.0.0"
   },
   "dependencies": {
     "invariant": "^2.1.0"
@@ -46,8 +46,8 @@
     "cz-conventional-changelog": "^1.1.5",
     "jsdom": "^7.2.2",
     "mocha": "^2.3.3",
-    "react-addons-test-utils": "^0.14.0",
-    "react-dom": "^0.14.0",
+    "react-addons-test-utils": "^15.0.0",
+    "react-dom": "^15.0.0",
     "rf-release": "^0.4.0",
     "semantic-release": "^4.3.5",
     "should": "^7.0.1"
