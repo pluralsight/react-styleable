@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import TestUtils from 'react-addons-test-utils'
+import TestUtils from 'react-dom/test-utils'
+import PropTypes from 'prop-types'
 
 import styleable from '../styleable'
 
@@ -28,7 +29,7 @@ function mkFixtureWithReqPropTypes() {
   @styleable(css)
   class Subject extends React.Component {
     static propTypes = {
-      aReqProp: React.PropTypes.string.isRequired
+      aReqProp: PropTypes.string.isRequired
     };
     render() {
       return (
@@ -56,7 +57,7 @@ function mkFunctionFixtureWithReqPropTypes() {
     return <div className={props.css.content}>Req content {props.aReqProp}</div>
   }
   subject.propTypes = {
-    aReqProp: React.PropTypes.string.isRequired
+    aReqProp: PropTypes.string.isRequired
   }
 
   return styleable(css)(subject)

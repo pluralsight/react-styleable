@@ -1,6 +1,7 @@
 import getDisplayName from './utils/get-display-name'
 import invariant from 'invariant'
 import React from 'react'
+import PropTypes from 'prop-types'
 
 function getSelectorsNotInStylesheet(cssProps, stylesheet) {
   const propKeys = Object.keys(cssProps)
@@ -61,7 +62,7 @@ export default function styleable(stylesheet) {
         };
         static propTypes = {
           ...DecoratedComponent.propTypes,
-          css: React.PropTypes.object
+          css: PropTypes.object
         };
         getCss() {
           invariant(
