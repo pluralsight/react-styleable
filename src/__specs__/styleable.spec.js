@@ -10,35 +10,39 @@ const css = {
 }
 
 function mkFixture(css) {
-  @styleable(css)
   class Subject extends React.Component {
-    static defaultProps = {
-      aDefault: 'still here'
-    };
     render() {
       return (
-        <div className={this.props.css.content} ref="content">Content {this.props.aDefault}</div>
+        <div className={this.props.css.content} ref="content">
+          Content {this.props.aDefault}
+        </div>
       )
     }
   }
 
-  return Subject
+  Subject.defaultProps = {
+    aDefault: 'still here'
+  }
+
+  return styleable(css)(Subject)
 }
 
 function mkFixtureWithReqPropTypes() {
-  @styleable(css)
   class Subject extends React.Component {
-    static propTypes = {
-      aReqProp: PropTypes.string.isRequired
-    };
     render() {
       return (
-        <div className={this.props.css.content} ref="content">Req content {this.props.aReqProp}</div>
+        <div className={this.props.css.content} ref="content">
+          Req content {this.props.aReqProp}
+        </div>
       )
     }
   }
 
-  return Subject
+  Subject.propTypes = {
+    aReqProp: PropTypes.string.isRequired
+  }
+
+  return styleable(css)(Subject)
 }
 
 function mkFunctionFixture(css) {
@@ -64,7 +68,6 @@ function mkFunctionFixtureWithReqPropTypes() {
 }
 
 describe('styleable', () => {
-
   it('creates a default stylesheet if none supplied', () => {
     const defaultStylesheet = {}
     const Subject = mkFixture()
@@ -73,21 +76,19 @@ describe('styleable', () => {
   })
 
   describe('with invalid stylesheet', () => {
-
     it('rejects css as strings', () => {
-      (() => {
+      ;(() => {
         const Subject = mkFixture('nonCssObj')
         TestUtils.renderIntoDocument(<Subject />)
       }).should.throw(/must be an object/)
     })
 
     it('rejects css as array', () => {
-      (() => {
+      ;(() => {
         const Subject = mkFixture(['css', 'stuff'])
         TestUtils.renderIntoDocument(<Subject />)
       }).should.throw(/must be an object/)
     })
-
   })
 
   it('wraps the component in a component', () => {
@@ -98,13 +99,12 @@ describe('styleable', () => {
   })
 
   describe('with invalid override selectors', () => {
-
-    it('rejects styles that won\'t be used (superset override)', (done) => {
+    it("rejects styles that won't be used (superset override)", done => {
       const origCss = { content: 'hash' }
       const overrideCss = { unusedSelector: 'anotherHash' }
       const Subject = mkFixture(origCss)
       try {
-        TestUtils.renderIntoDocument(<Subject css={overrideCss}/>)
+        TestUtils.renderIntoDocument(<Subject css={overrideCss} />)
       } catch (e) {
         /*
           Using this instead of (() => {}).should.throw()
@@ -118,7 +118,6 @@ describe('styleable', () => {
         done()
       }
     })
-
   })
 
   it('overrides original stylesheet', () => {
@@ -126,8 +125,8 @@ describe('styleable', () => {
     const origCss = { content: 'hash' }
     const overrideCss = { content: newHash }
     const Subject = mkFixture(origCss)
-    var component = TestUtils.renderIntoDocument(<Subject css={overrideCss}/>)
-    component.props.css.content.should.eql(newHash )
+    var component = TestUtils.renderIntoDocument(<Subject css={overrideCss} />)
+    component.props.css.content.should.eql(newHash)
   })
 
   it('lets defaultProps pass through', () => {
@@ -143,12 +142,13 @@ describe('styleable', () => {
   })
 
   describe('with stateless functions', () => {
-
     it('makes the css prop available', () => {
       const css = { content: 'cssHash' }
       const Subject = mkFunctionFixture(css)
       const component = TestUtils.renderIntoDocument(<div><Subject /></div>)
-      ReactDOM.findDOMNode(component).children[0].className.should.eql(css.content)
+      ReactDOM.findDOMNode(component).children[0].className.should.eql(
+        css.content
+      )
     })
 
     it('allows overrides to the stylesheet', () => {
@@ -156,7 +156,9 @@ describe('styleable', () => {
       const origCss = { content: 'hash' }
       const overrideCss = { content: newHash }
       const Subject = mkFunctionFixture(origCss)
-      const component = TestUtils.renderIntoDocument(<div><Subject css={overrideCss} /></div>)
+      const component = TestUtils.renderIntoDocument(
+        <div><Subject css={overrideCss} /></div>
+      )
       ReactDOM.findDOMNode(component).children[0].className.should.eql(newHash)
     })
 
@@ -164,7 +166,9 @@ describe('styleable', () => {
       const Subject = mkFunctionFixture()
       Subject.defaultProps.aDefault.should.exist
       const component = TestUtils.renderIntoDocument(<div><Subject /></div>)
-      ReactDOM.findDOMNode(component).children[0].textContent.should.eql('Content still here')
+      ReactDOM.findDOMNode(component).children[0].textContent.should.eql(
+        'Content still here'
+      )
     })
 
     it('lets propTypes pass through', () => {
@@ -177,5 +181,4 @@ describe('styleable', () => {
       Subject.propTypes.aReqProp.should.exist
     })
   })
-
 })

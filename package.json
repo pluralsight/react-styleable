@@ -36,14 +36,13 @@
   "devDependencies": {
     "babel-cli": "^6.4.5",
     "babel-core": "^6.4.5",
-    "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.3.13",
-    "babel-preset-stage-0": "^6.3.13",
+    "babel-preset-stage-2": "^6.24.1",
     "jsdom": "^7.2.2",
     "mocha": "^2.3.3",
-    "react": "^15.5.4",
     "prop-types": "15.5.8",
+    "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "should": "^7.0.1"
   }
