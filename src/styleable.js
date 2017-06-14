@@ -18,7 +18,9 @@ function hasDefinedStyles(stylesheet) {
 }
 
 function stylesAreOverrides(cssProps, stylesheet) {
-  return hasDefinedStyles(stylesheet) ? isPropsAnOverride(cssProps, stylesheet) : true
+  return hasDefinedStyles(stylesheet)
+    ? isPropsAnOverride(cssProps, stylesheet)
+    : true
 }
 
 function isClass(Comp) {
@@ -32,38 +34,29 @@ function isClass(Comp) {
 }
 
 export default function styleable(stylesheet) {
-  if (!stylesheet)
-    stylesheet = {}
+  if (!stylesheet) stylesheet = {}
 
   if (typeof stylesheet !== 'object' || Array.isArray(stylesheet))
-    throw new Error('stylesheet must be an object (eg, export object from a css module)')
+    throw new Error(
+      'stylesheet must be an object (eg, export object from a css module)'
+    )
 
   return function decorateSource(DecoratedComponent) {
     if (!isClass(DecoratedComponent)) {
-      const styledFn = function (props) {
+      const styledFn = function(props) {
         return DecoratedComponent({
           ...props,
           css: {
             ...stylesheet,
             ...props.css
           }
-        });
+        })
       }
       styledFn.defaultProps = DecoratedComponent.defaultProps
       styledFn.propTypes = DecoratedComponent.propTypes
       return styledFn
-    }
-    else
-      return class Styleable extends React.Component {
-        static displayName = `Styleable(${getDisplayName(DecoratedComponent)})`;
-        static defaultProps = {
-          ...DecoratedComponent.defaultProps,
-          css: {}
-        };
-        static propTypes = {
-          ...DecoratedComponent.propTypes,
-          css: PropTypes.object
-        };
+    } else {
+      class Styleable extends React.Component {
         getCss() {
           invariant(
             stylesAreOverrides(this.props.css, stylesheet),
@@ -74,8 +67,25 @@ export default function styleable(stylesheet) {
           return { ...stylesheet, ...this.props.css }
         }
         render() {
-          return <DecoratedComponent ref="wrapped" {...this.props} css={this.getCss()} />
+          return (
+            <DecoratedComponent
+              ref="wrapped"
+              {...this.props}
+              css={this.getCss()}
+            />
+          )
         }
       }
+      Styleable.displayName = `Styleable(${getDisplayName(DecoratedComponent)})`
+      Styleable.defaultProps = {
+        ...DecoratedComponent.defaultProps,
+        css: {}
+      }
+      Styleable.propTypes = {
+        ...DecoratedComponent.propTypes,
+        css: PropTypes.object
+      }
+      return Styleable
+    }
   }
 }
