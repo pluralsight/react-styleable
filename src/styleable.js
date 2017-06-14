@@ -67,13 +67,7 @@ export default function styleable(stylesheet) {
           return { ...stylesheet, ...this.props.css }
         }
         render() {
-          return (
-            <DecoratedComponent
-              ref="wrapped"
-              {...this.props}
-              css={this.getCss()}
-            />
-          )
+          return <DecoratedComponent {...this.props} css={this.getCss()} />
         }
       }
       Styleable.displayName = `Styleable(${getDisplayName(DecoratedComponent)})`

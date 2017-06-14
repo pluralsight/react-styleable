@@ -95,7 +95,6 @@ describe('styleable', () => {
     const Subject = mkFixture()
     const component = TestUtils.renderIntoDocument(<Subject />)
     component.refs.should.not.have.property('content')
-    component.refs.should.have.property('wrapped')
   })
 
   describe('with invalid override selectors', () => {
