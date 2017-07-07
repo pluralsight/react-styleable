@@ -125,7 +125,7 @@ describe('styleable', () => {
     const overrideCss = { content: newHash }
     const Subject = mkFixture(origCss)
     var component = TestUtils.renderIntoDocument(<Subject css={overrideCss} />)
-    component.props.css.content.should.eql(newHash)
+    ReactDOM.findDOMNode(component).className.should.eql(newHash)
   })
 
   it('lets defaultProps pass through', () => {
