@@ -97,8 +97,8 @@ describe('styleable', () => {
     component.refs.should.not.have.property('content')
   })
 
-  describe('with invalid override selectors', () => {
-    it("rejects styles that won't be used (superset override)", done => {
+  describe('with invalid selectors (superset)', () => {
+    it('rejects override styles that wont be used', done => {
       const origCss = { content: 'hash' }
       const overrideCss = { unusedSelector: 'anotherHash' }
       const Subject = mkFixture(origCss)
@@ -117,6 +117,18 @@ describe('styleable', () => {
         done()
       }
     })
+
+    it('rejects compose styles that wont be used', done => {
+      const origCss = { content: 'hash' }
+      const overrideCss = { compose: { unusedSelector: 'anotherHash' } }
+      const Subject = mkFixture(origCss)
+      try {
+        TestUtils.renderIntoDocument(<Subject css={overrideCss} />)
+      } catch (e) {
+        e.message.should.match(/provide only composes/)
+        done()
+      }
+    })
   })
 
   it('overrides original stylesheet', () => {
@@ -126,6 +138,14 @@ describe('styleable', () => {
     const Subject = mkFixture(origCss)
     var component = TestUtils.renderIntoDocument(<Subject css={overrideCss} />)
     ReactDOM.findDOMNode(component).className.should.eql(newHash)
+  })
+
+  it('composes new css', () => {
+    const origCss = { content: 'hash' }
+    const overrideCss = { compose: { content: 'anotherHash' } }
+    const Subject = mkFixture(origCss)
+    var component = TestUtils.renderIntoDocument(<Subject css={overrideCss} />)
+    ReactDOM.findDOMNode(component).className.should.eql('hash anotherHash')
   })
 
   it('lets defaultProps pass through', () => {
