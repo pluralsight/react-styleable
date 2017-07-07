@@ -38,6 +38,22 @@ const compose = (toCompose = {}, css) =>
     return acc
   }, css)
 
+const validate = (origCss, newCss) => {
+  invariant(
+    stylesAreOverrides(newCss, origCss),
+    'Expected "this.props.css" to provide only overrides to the given stylesheet.  Selectors "%s" not included in the stylesheet keys, "%s".',
+    getSelectorsNotInStylesheet(newCss, origCss),
+    Object.keys(origCss)
+  )
+
+  invariant(
+    stylesAreOverrides((newCss || {}).compose, origCss),
+    'Expected "this.props.css" to provide only composes to the given stylesheet.  Selectors "%s" not included in the stylesheet keys, "%s".',
+    getSelectorsNotInStylesheet((newCss || {}).compose, origCss),
+    Object.keys(origCss)
+  )
+}
+
 export default function styleable(stylesheet) {
   if (!stylesheet) stylesheet = {}
 
@@ -49,23 +65,7 @@ export default function styleable(stylesheet) {
   return function decorateSource(DecoratedComponent) {
     class Styleable extends React.Component {
       getCss() {
-        invariant(
-          stylesAreOverrides(this.props.css, stylesheet),
-          'Expected "this.props.css" to provide only overrides to the given stylesheet.  Selectors "%s" not included in the stylesheet keys, "%s".',
-          getSelectorsNotInStylesheet(this.props.css, stylesheet),
-          Object.keys(stylesheet)
-        )
-
-        invariant(
-          stylesAreOverrides((this.props.css || {}).compose, stylesheet),
-          'Expected "this.props.css" to provide only composes to the given stylesheet.  Selectors "%s" not included in the stylesheet keys, "%s".',
-          getSelectorsNotInStylesheet(
-            (this.props.css || {}).compose,
-            stylesheet
-          ),
-          Object.keys(stylesheet)
-        )
-
+        validate(stylesheet, this.props.css)
         const overridden = { ...stylesheet, ...rmSpecialCss(this.props.css) }
         const composed = compose((this.props.css || {}).compose, overridden)
         return composed
