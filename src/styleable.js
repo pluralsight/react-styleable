@@ -32,14 +32,14 @@ const compose = (toCompose = {}, css) =>
 const validate = (origCss, newCss) => {
   invariant(
     areSelectorsMatchingSet(newCss, origCss),
-    'Expected "this.props.css" to provide only overrides to the given stylesheet.  Selectors "%s" not included in the stylesheet keys, "%s".',
+    'Expected "this.props.css" to provide only selectors in the original stylesheet.  These selectors "%s" are not included in the stylesheet keys, "%s".',
     getSelectorsInSetDifference(newCss, origCss),
     Object.keys(origCss)
   )
 
   invariant(
     areSelectorsMatchingSet(newCss.compose, origCss),
-    'Expected "this.props.css" to provide only composes to the given stylesheet.  Selectors "%s" not included in the stylesheet keys, "%s".',
+    'Expected "this.props.css.compose" to provide only selectors in the original stylesheet.  These selectors "%s" are not included in the stylesheet keys, "%s".',
     getSelectorsInSetDifference(newCss.compose, origCss),
     Object.keys(origCss)
   )
