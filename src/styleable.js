@@ -1,30 +1,21 @@
-import getDisplayName from './utils/get-display-name'
 import invariant from 'invariant'
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
+
+import getDisplayName from './utils/get-display-name'
 
 const isSpecialKey = selector => selector === 'compose'
 
-function getSelectorsNotInStylesheet(cssProps = {}, stylesheet) {
-  const propKeys = Object.keys(cssProps)
-  const cssKeys = Object.keys(stylesheet)
-  return propKeys
-    .filter(prop => cssKeys.indexOf(prop) === -1)
-    .filter(k => !isSpecialKey(k))
+function getSelectorsInSetDifference(newCss = {}, origCss = {}) {
+  const newSet = Object.keys(newCss)
+  const origSet = Object.keys(origCss)
+  return newSet
+    .filter(selector => origSet.indexOf(selector) === -1)
+    .filter(selector => !isSpecialKey(selector))
 }
 
-function isPropsAnOverride(cssProps, stylesheet) {
-  return getSelectorsNotInStylesheet(cssProps, stylesheet).length <= 0
-}
-
-function hasDefinedStyles(stylesheet) {
-  return stylesheet && Object.keys(stylesheet).length > 0
-}
-
-function stylesAreOverrides(cssProps, stylesheet) {
-  return hasDefinedStyles(stylesheet)
-    ? isPropsAnOverride(cssProps, stylesheet)
-    : true
+function areSelectorsMatchingSet(newCss, origCss) {
+  return getSelectorsInSetDifference(newCss, origCss).length <= 0
 }
 
 const rmSpecialCss = css => {
@@ -40,24 +31,24 @@ const compose = (toCompose = {}, css) =>
 
 const validate = (origCss, newCss) => {
   invariant(
-    stylesAreOverrides(newCss, origCss),
+    areSelectorsMatchingSet(newCss, origCss),
     'Expected "this.props.css" to provide only overrides to the given stylesheet.  Selectors "%s" not included in the stylesheet keys, "%s".',
-    getSelectorsNotInStylesheet(newCss, origCss),
+    getSelectorsInSetDifference(newCss, origCss),
     Object.keys(origCss)
   )
 
   invariant(
-    stylesAreOverrides((newCss || {}).compose, origCss),
+    areSelectorsMatchingSet(newCss.compose, origCss),
     'Expected "this.props.css" to provide only composes to the given stylesheet.  Selectors "%s" not included in the stylesheet keys, "%s".',
-    getSelectorsNotInStylesheet((newCss || {}).compose, origCss),
+    getSelectorsInSetDifference(newCss.compose, origCss),
     Object.keys(origCss)
   )
 }
 
-export default function styleable(stylesheet) {
-  if (!stylesheet) stylesheet = {}
+export default function styleable(origCss) {
+  if (!origCss) origCss = {}
 
-  if (typeof stylesheet !== 'object' || Array.isArray(stylesheet))
+  if (typeof origCss !== 'object' || Array.isArray(origCss))
     throw new Error(
       'stylesheet must be an object (ie, export object from a css module)'
     )
@@ -65,9 +56,10 @@ export default function styleable(stylesheet) {
   return function decorateSource(DecoratedComponent) {
     class Styleable extends React.Component {
       getCss() {
-        validate(stylesheet, this.props.css)
-        const overridden = { ...stylesheet, ...rmSpecialCss(this.props.css) }
-        const composed = compose((this.props.css || {}).compose, overridden)
+        const newCss = this.props.css || {}
+        validate(origCss, newCss)
+        const overridden = { ...origCss, ...rmSpecialCss(newCss) }
+        const composed = compose(newCss.compose, overridden)
         return composed
       }
       render() {
