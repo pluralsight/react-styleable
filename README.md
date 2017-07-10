@@ -106,7 +106,7 @@ Now the original red outline will remain and a pink background will be present a
 
 But it has the downside of having to locate the original stylesheet location.
 
-If you have enough assurances on the cascade order and selector specificity, all potential concerns, you can use the `compose` api via the `react-styleable` to accomplish the same thing:
+If you have enough assurances on the cascade order and selector specificity, all potential concerns, you can use the `compose` api via the `react-styleable` to accomplish the same thing (in `react-styleable@3.1.0`):
 
 ```js
 import MyList from './my-list'
