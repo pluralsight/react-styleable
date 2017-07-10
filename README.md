@@ -1,10 +1,6 @@
 # react-styleable
 
-A higher-order React Component that:
-
-- Makes defining and using css styles in React Components consistent
-- Makes your styles portable with your reusable components
-- Makes overriding styles easy and predictable
+Consistent, easy overrides for CSS Modules in React Components
 
 ## Install
 
@@ -12,25 +8,13 @@ A higher-order React Component that:
 npm install react-styleable --save-dev
 ```
 
-## Dependencies
-
-#### CSS Modules
-
-react-styleable assumes that your reusable component and consumers of that component will be using [CSS modules](https://github.com/css-modules/css-modules).
-
-CSS Modules allow for:
-
-- Writing CSS normally in a stylesheet in either vanilla CSS or any number of preprocessors (eg, Sass)
-- Not having to worry about a global namespace, creating a per-use module around styles
-- Defining explicit dependencies in your styles
-
-I recommend using webpack's [css-loader](https://github.com/webpack/css-loader), which has [support for CSS Modules](https://github.com/webpack/css-loader#css-modules).
-
 ## Usage
 
-react-styleable shines when used on reusable react components that has an accompanying stylesheet.
+### Styles in Props
 
-Write your css as you usually would.  However, note that there's no need for a BEM-style namespacing.  This is because these styles will be scoped to your local module.
+`react-styleable` makes your styles from your CSS modules available on `props.css`.
+
+Write your stylesheet with all the perks of [css modules](https://github.com/css-modules/css-modules).  For example:
 
 ```css
 .list {
@@ -44,15 +28,14 @@ Write your css as you usually would.  However, note that there's no need for a B
 }
 ```
 
-Then in your reusable component, wrap your React.Component in this higher-order component.  A decorator will work quite nicely:
+Then in your reusable component, wrap your React.Component in `react-styleable`'s higher-order component.
 
 ```js
 import styleable from 'react-styleable'
 
 import css from './my-list.css'
 
-@styleable(css)
-export default class MyList extends React.Component {
+class MyList extends React.Component {
   renderItem(item, i) {
     return (
       <li key={i} className={this.props.css.item}>{item}</li>
@@ -69,18 +52,24 @@ export default class MyList extends React.Component {
     )
   }
 }
+
+export default styleable(css)(MyList)
 ```
 
-Now you can use the `MyList` component above and it will be styled as specified.
-
+Usage as a decorator is also nice:
 
 ```js
-import MyList from './my-list'
-
-React.render(<MyList />, document.getElementById('app'))
+@styleable(css)
+class MyList extends React.Component { /* ... */ }
 ```
 
-If you want to override this React Component's styles as the consumer, you can easily do so, through the same, consistent interface.  First, define a new stylesheet:
+Your `MyList` component is now styled and ready to display!
+
+### Overriding Component Styles
+
+This is the big payoff.
+
+If you want to override this component's styles as the consumer, you can easily do so, through the same, consistent interface.  First, define a new stylesheet:
 
 ```css
 .item {
@@ -88,7 +77,7 @@ If you want to override this React Component's styles as the consumer, you can e
 }
 ```
 
-And use it to render `MyList` again:
+And use it to render `MyList` again, passing your new stylesheet via the `props.css` prop:
 
 ```js
 import MyList from './my-list'
@@ -100,32 +89,31 @@ React.render(<MyList css={css} />, document.getElementById('app'))
 
 Now the `.item`s outline will be blue instead of the original red.
 
-### React 0.14 Stateless Functions Usage
+### Composing Component Styles
 
-You can also wrap stateless functions, now possible in react@0.14, with `react-styleable`.  The above `MyList` component could be rewritten as a stateless component:
+If instead of just overriding the styles, you wanted to add to them with style composition, you can do that as well.
+
+One method is via CSS modules' [`composes`](https://github.com/css-modules/css-modules#composition) keyword.  In your new stylesheet:
+
+```css
+.item {
+  composes: item from "./my-list.css";
+  background: pink;
+}
+```
+
+Now the original red outline will remain and a pink background will be present as well.  This is the most surefire way to compose styles because it allows you to guarantee the order of the cascade.  
+
+But it has the downside of having to locate the original stylesheet location.
+
+If you have enough assurances on the cascade order and selector specificity, all potential concerns, you can use the `compose` api via the `react-styleable` to accomplish the same thing:
 
 ```js
-import styleable from 'react-styleable'
+import MyList from './my-list'
 
-import css from './my-list.css'
+import css from './client.css'
 
-function renderItem(css, item, i) {
-  return (
-    <li key={i} className={css.item}>{item}</li>
-  )
-}
-function renderList(css, items) {
-  return items.map(renderItem.bind(null, css))
-}
-function MyList(props) {
-  return (
-    <ul className={props.css.list}>
-      {renderList(props.css, props.items)}
-    </ul>
-  )
-}
-
-export default styleable(css)(MyList)
+React.render(<MyList css={{ compose: css }} />, document.getElementById('app'))
 ```
 
 Styled. Portable. Easily overridden.  So, so good.
