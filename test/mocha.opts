@@ -1,3 +1,4 @@
+--require raf/polyfill
 --require test/utils/babel-register.js
 --require test/utils/node-extensions.js
 --require test/utils/dom.js
