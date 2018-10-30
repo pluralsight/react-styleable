@@ -4,6 +4,7 @@ const path = require('path')
 const src = path.resolve('src')
 
 module.exports = {
+  mode: 'production',
   entry: './src/index.js',
   output: {
     filename: 'index.js',
@@ -17,8 +18,8 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: ['react'],
-              plugins: ['babel-plugin-transform-object-rest-spread']
+              presets: ['@babel/preset-react'],
+              plugins: ['@babel/plugin-proposal-object-rest-spread']
             }
           }
         ],
@@ -36,7 +37,6 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      // Required
       inject: false,
       template: require('html-webpack-template'),
       appMountId: 'app'
