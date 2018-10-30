@@ -41,7 +41,7 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-2": "^6.24.1",
     "jsdom": "^7.2.2",
-    "mocha": "^2.3.3",
+    "mocha": "^5.2.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "should": "^7.0.1"
