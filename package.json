@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "invariant": "^2.1.0",
-    "prop-types": "^15.6.2"
+    "prop-types": "^15.7.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.2",
@@ -43,8 +43,8 @@
     "jsdom": "^15.1.1",
     "mocha": "^6.2.1",
     "raf": "^3.4.1",
-    "react": "^16.6.0",
-    "react-dom": "^16.6.0",
+    "react": "^16.10.1",
+    "react-dom": "^16.10.1",
     "should": "^13.2.3"
   }
 }
