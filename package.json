@@ -2,7 +2,7 @@
   "name": "react-styleable",
   "description": "Higher-order component for styling react",
   "main": "index.js",
-  "version": "3.3.2",
+  "version": "3.3.3",
   "scripts": {
     "build": "babel src/ --source-maps --out-dir lib/",
     "prepublish": "npm run build",
